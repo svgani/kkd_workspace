@@ -69,7 +69,7 @@ while True:
 				flag=1
 				break
 		if flag==0:
-			# print(a)
+			print(a)
 			break
 userinput()
 print('number guessed succesfully\nThanks for playing')
