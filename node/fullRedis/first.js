@@ -1,0 +1,97 @@
+const path = require('path');
+const express = require('express');
+const hbs = require('hbs');
+const app = express();
+const bodyParser = require('body-parser');
+var fun = require('./functions');
+const PORT = process.env.PORT || 8080
+
+app.use(require("express-session")({
+  name: 'cbGame',
+  secret: 'nodegani1234',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    secure: process.env.NODE_ENV == "production" ? true : false ,
+    maxAge: 1000 * 60 * 10
+  }
+}));
+
+app.set('views',path.join(__dirname,'views'));
+app.set('view engine','hbs');
+app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.get('/',(req,res) => {
+  console.log("user in welcomePage")
+  res.render('welcomePage');
+});
+
+app.get('/rules',(req,res) => {
+  console.log("user in rulesPage")
+  res.render('rules');
+});
+
+app.post('/game',(req,res) => {
+  req.session.nd=req.body.nd;
+  if ( (req.session.nd) > 10 || (req.session.nd) < 1) {
+      res.render('userPage',{
+      text : "enter correct value",
+      name :  req.session.name
+    });
+    console.log(req.session.nd);
+  } else {
+    res.render('gamePage',{
+      digit : req.session.nd
+    });
+    // compute random Number
+    req.session.aNum = fun.aNum(req.session.nd);
+    console.log("random number : "+req.session.aNum );
+  }
+  console.log("digits_"+req.session.nd);
+});
+
+app.post('/exec',(req,res) => {
+  req.session.number=req.body.number;
+  if ( (req.session.number).length!=req.session.nd ) {
+    console.log("count: "+(req.session.number).length);
+    res.render('gamePage',{
+      digit : req.session.nd,
+      text : "enter the "+req.session.nd+" digit number"
+    });
+  }
+  else if (fun.bNum(req.session.aNum,req.session.number,req.session.nd)) {
+    res.render('gamePage',{
+      digit : req.session.nd
+    });
+  }
+  else {
+    res.render("end",{
+      digit : req.session.nd
+    });
+  }
+  console.log(req.session);
+});
+
+app.get('/exec',(req,res) => {
+  console.log("get method in exec page")
+  res.redirect("/");
+});
+
+app.post('/user',(req,res) => {
+  req.session.name=fun.capital(req.body.name);
+  if (req.session.name=="") {
+    res.render('welcomePage',{
+      text : "Name is required"
+    });
+  } else {
+    res.render('userPage',{
+      name : req.session.name
+    });
+    console.log("name_"+req.session.name);
+  }
+});
+
+app.listen(PORT,() => {
+  console.log('Server is running at port 8080');
+})
