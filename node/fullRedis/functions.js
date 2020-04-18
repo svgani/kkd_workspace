@@ -28,11 +28,10 @@ exports.aNum = function(nd) {
   }
 }
 
-var cowc,bullc;
 exports.bNum = function(a,b,nd) {
   // console.log(b)
-  bullc=0;
-	cowc=0;
+  var bullc=0;
+	var cowc=0;
 	for (i=0;i<nd;i++){
     for (j=0;j<nd;j++){
       if (i!=j){
@@ -50,3 +49,20 @@ exports.bNum = function(a,b,nd) {
   console.log("cows : "+cowc+" bulls : "+bullc);
   return [b,cowc,bullc];
 }
+
+exports.bRep = function(b,nd){
+  for (var i=0;i<nd;i++){
+    for (var j=i+1;j<nd;j++){
+      if (b[i]==b[j]){
+        return true;
+      }
+    }
+  }
+}
+
+// exports.lrender = function (list) {
+//   for (var prop in list) {
+//       document.getElementById('listrender').innerHTML += '<li>' + prop + '</li>';
+//       console.log("list render log : "+prop);
+//   }
+// }

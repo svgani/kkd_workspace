@@ -34,6 +34,7 @@ app.get('/rules',(req,res) => {
 });
 
 app.post('/game',(req,res) => {
+  //fun.lrender(req.session.list);
   req.session.nd=req.body.nd;
   if ( (req.session.nd) > 10 || (req.session.nd) < 1) {
       res.render('userPage',{
@@ -60,6 +61,14 @@ app.post('/exec',(req,res) => {
     res.render('gamePage',{
       digit : req.session.nd,
       text : "enter the "+req.session.nd+" digit number",
+      list : req.session.list
+    });
+  }
+  else if (fun.bRep(req.session.number,req.session.nd)) {
+    console.log("repetitions in input occured");
+    res.render('gamePage',{
+      digit : req.session.nd,
+      text : "enter the "+req.session.nd+" digit number without repetitions",
       list : req.session.list
     });
   }

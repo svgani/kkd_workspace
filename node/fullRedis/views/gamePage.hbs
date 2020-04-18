@@ -5,6 +5,9 @@
     <link rel="stylesheet" href="css/bootstrap.css" />
   </head>
   <body>
+    <!-- <script>
+        alert(list)
+    </script> -->
     <div class="jumbotron text-center" >
       <div>
         <h1>Cow Bull Game</h1><br>
@@ -16,9 +19,12 @@
         </form>
       </div> <br>
       <h5 class="text-info">{{text}}</h5>
+      <!-- <button onclick='lr({{list}})'>test</button> -->
       <div>
-        <ul>{{list}}</ul>
+        <ul id = listrender>
+          {{list}}
+        </ul>
       </div>
-    </div>
+      </div>
   </body>
 </html>
