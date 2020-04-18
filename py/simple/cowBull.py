@@ -13,6 +13,7 @@ class ValueLargeError(Error):
    pass
 
 def userinput():
+	flag=0
 	try:
 		b=int(input("enter the guessed number:"))
 		b=str(b)
@@ -21,6 +22,13 @@ def userinput():
 		userinput()
 	if len(b)!=n:
 		print("enter ",n," digit number")
+		flag=1
+	else:
+		for i in range(n-1) :
+			if b[i] in b[i+1:]:
+				print("number repetitions not allowed")
+				flag=1	
+	if flag:
 		userinput()
 	exec(b)
 
@@ -39,7 +47,7 @@ def exec(b):
 	if bullc!=n:
 		userinput()
 	else:
-		return
+		exit()
 
 while True:
 	try:

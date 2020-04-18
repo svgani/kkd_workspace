@@ -17,6 +17,9 @@ exports.aNum = function(nd) {
           }
         }
       }
+      if(a[0]=='0'){
+        flag=1;
+      }
       if (flag==0) {
         console.log(a);
         return a;
