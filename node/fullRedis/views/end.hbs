@@ -6,7 +6,18 @@
   <body>
     <h1>Thanks for Playing</h1>
     <h3>The {{digit}} digit number is found</h3>
-    <!-- <h3>The Number of chances taken are {{len}}</h3> -->
+    <h3>The Number of chances taken are {{len}}</h3>
+
+    <script>
+      table = document.getElementById("table");
+      for (var i=1;i<{{len}};i++){
+        for (var j=0;j<3;j++){
+          table.rows[i].cells[j].innerHTML = list[i-1][j];
+        }
+      }
+    </script>
+
+    <li>{{list}}</li>
     <h4><a href="/">Play_Again</a></h4>
   </body>
 </html>

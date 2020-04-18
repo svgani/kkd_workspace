@@ -5,6 +5,7 @@ const app = express();
 const bodyParser = require('body-parser');
 var fun = require('./functions');
 const PORT = process.env.PORT || 8080
+var arr;
 
 app.use(require("express-session")({
   name: 'cbGame',
@@ -46,6 +47,7 @@ app.post('/game',(req,res) => {
     });
     // compute random Number
     req.session.aNum = fun.aNum(req.session.nd);
+    req.session.list=[]
     console.log("random number : "+req.session.aNum );
   }
   console.log("digits_"+req.session.nd);
@@ -57,20 +59,29 @@ app.post('/exec',(req,res) => {
     console.log("count: "+(req.session.number).length);
     res.render('gamePage',{
       digit : req.session.nd,
-      text : "enter the "+req.session.nd+" digit number"
-    });
-  }
-  else if (fun.bNum(req.session.aNum,req.session.number,req.session.nd)) {
-    res.render('gamePage',{
-      digit : req.session.nd
+      text : "enter the "+req.session.nd+" digit number",
+      list : req.session.list
     });
   }
   else {
-    res.render("end",{
-      digit : req.session.nd
-    });
+    arr = fun.bNum(req.session.aNum,req.session.number,req.session.nd);
+    req.session.list.push(arr);
+    if (arr[2]!=req.session.nd){
+      res.render('gamePage',{
+        digit : req.session.nd,
+        list : req.session.list
+      });
+    }
+    else {
+      res.render("end",{
+        digit : req.session.nd,
+        len : (req.session.list).length,
+        list : req.session.list
+      });
+    }
+    console.log((req.session.list).length);
+    console.log(req.session);
   }
-  console.log(req.session);
 });
 
 app.get('/exec',(req,res) => {

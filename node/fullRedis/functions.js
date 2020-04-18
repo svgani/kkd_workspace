@@ -4,11 +4,11 @@ exports.capital = function (text) {
 }
 
 exports.aNum = function(nd) {
-  var a=""
+  var a="";
   while (true) {
     a = String(Math.round(Math.random() * Math.pow(10,nd)))
-    var flag = 0
-    var i,j
+    var flag = 0;
+    var i,j;
     if (a.length == nd){
       for (i=0;i<nd;i++){
         for (j=i+1;j<nd;j++){
@@ -28,8 +28,8 @@ exports.aNum = function(nd) {
 var cowc,bullc;
 exports.bNum = function(a,b,nd) {
   // console.log(b)
-  bullc=0
-	cowc=0
+  bullc=0;
+	cowc=0;
 	for (i=0;i<nd;i++){
     for (j=0;j<nd;j++){
       if (i!=j){
@@ -44,11 +44,6 @@ exports.bNum = function(a,b,nd) {
       bullc+=1;
     }
   }
-  console.log("cows : "+cowc+" bulls : "+bullc)
-  if (bullc!=nd) {
-    return true;
-  }
-  else {
-    return false;
-  }
+  console.log("cows : "+cowc+" bulls : "+bullc);
+  return [b,cowc,bullc];
 }

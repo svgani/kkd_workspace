@@ -11,6 +11,7 @@
     "bootstrap": "^4.4.1",
     "express": "^4.17.1",
     "express-service": "^1.7.0",
+    "express-session": "^1.17.1",
     "hbs": "^4.1.1"
   }
 }
