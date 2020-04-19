@@ -25,6 +25,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/',(req,res) => {
   console.log("user in welcomePage")
+  console.log(req.session);
   res.render('welcomePage');
 });
 
@@ -35,6 +36,7 @@ app.get('/rules',(req,res) => {
 
 app.post('/game',(req,res) => {
   //fun.lrender(req.session.list);
+  console.log(req.session);
   req.session.nd=req.body.nd;
   if ( (req.session.nd) > 10 || (req.session.nd) < 1) {
       res.render('userPage',{
@@ -55,8 +57,16 @@ app.post('/game',(req,res) => {
 });
 
 app.post('/exec',(req,res) => {
+  console.log(req.session);
   req.session.number=req.body.number;
-  if ( (req.session.number).length!=req.session.nd ) {
+  console.log("no of digits in exec page "+req.session.nd);
+  if (req.session.nd=='undefined'){
+    console.log("Previous session expired");
+    res.render('welcomePage',{
+      text : "Previous session expired"
+    });
+  }
+  else if ( (req.session.number).length!=req.session.nd ) {
     console.log("count: "+(req.session.number).length);
     res.render('gamePage',{
       digit : req.session.nd,
@@ -102,11 +112,13 @@ app.post('/exec',(req,res) => {
 });
 
 app.get('/exec',(req,res) => {
+  console.log(req.session);
   console.log("get method in exec page")
   res.redirect("/");
 });
 
 app.post('/user',(req,res) => {
+  console.log(req.session);
   req.session.name=fun.capital(req.body.name);
   if (req.session.name=="") {
     res.render('welcomePage',{
