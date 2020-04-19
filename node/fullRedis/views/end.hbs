@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="css/bootstrap.css" />
   </head>
   <body>
+    <div class="container">
     <div class="jumbotron text-center" >
       <div>
         <h1>Cow Bull Game</h1><br><br>
@@ -12,10 +13,28 @@
         <h4 class="text-info">The {{digit}} digit number is found</h4>
         <h5 class="text-info">The Number of chances taken are {{len}}</h5>
       </div><br>
-      <ul>
-          {{list}}
-      </ul>
+      <div>
+        <table class="table table-bordered text-center table-striped">
+          <thead class="bg-info">
+            <tr>
+              <th scope="col">Number</th>
+              <th scope="col">Cows</th>
+              <th scope="col">Bulls</th>
+            </th>
+          </thead>
+          <tbody>
+            {{#each list}}
+              <tr>
+                {{#each this}}
+                  <td>{{this}}</td>
+                {{/each}}
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
       <h4><a href="/">Play_Again</a></h4>
+    </div>
     </div>
   </body>
 </html>
