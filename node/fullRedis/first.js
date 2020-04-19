@@ -72,6 +72,14 @@ app.post('/exec',(req,res) => {
       list : req.session.list
     });
   }
+  else if (req.session.number[0]=='0') {
+    console.log("repetitions in input occured");
+    res.render('gamePage',{
+      digit : req.session.nd,
+      text : "enter the "+req.session.nd+" digit number not starting with 0",
+      list : req.session.list
+    });
+  }
   else {
     arr = fun.bNum(req.session.aNum,req.session.number,req.session.nd);
     req.session.list.push(arr);
