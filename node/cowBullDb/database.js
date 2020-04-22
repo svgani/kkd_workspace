@@ -149,7 +149,7 @@ const guessNO = (req,res) => {
   else {
     arr = fun.bNum(a,req.body.number,nd);
     console.log(arr);
-    list=list+arr
+    list=arr+list
     client.query('update cowbull set result = ($1) where uid = ($2)',[list,req.params.u_id])
     console.log(list);
     if (arr[nd+1]!=nd){
