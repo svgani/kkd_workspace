@@ -1,18 +1,36 @@
 const path = require('path');
 const express = require('express');
 const hbs = require('hbs');
+var favicon = require('serve-favicon');
 const app = express();
 const bodyParser = require('body-parser');
 var fun = require('./functionmod');
 var db = require('./database');
 const PORT = process.env.PORT || 8080
 
-
+app.use(favicon(path.join(__dirname, 'views', 'circled-g.png')))
 app.set('views',path.join(__dirname,'views'));
 app.set('view engine','hbs');
+// app.engine('hbs', engines.handlebars);
 // app.use(express.static('public'));
 app.use('/public', express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// hbs.registerHelper('toList', function(list, chances, digit, block) {
+//   var updatedList = [];
+//   console.log("chances : "+chances+" digits : "+digit);
+//   for(var i = 0; i < chances; i++) {
+//     var a=i*(digit+2);
+//     var b=(i+1)*(digit+2);
+//     console.log("a : "+a+" b : "+b);
+//     var t=list.slice(a,b);
+//     console.log(t)
+//     var s=[]
+//     s.push(t.slice(0,digit),t.slice(digit,digit+1),t.slice(digit+1,digit+2))
+//     updatedList.push(s);
+//   }
+//   return updatedList
+// });
 
 app.get('/',(req,res) => {
   console.log("user in welcomePage")
@@ -25,7 +43,6 @@ app.get('/rules',(req,res) => {
 });
 
 app.post('/',db.putName);
-app.get('/:u_id',db.getName);
 app.post('/:u_id/game',db.putDigits);
 app.post('/:u_id/exec',db.guessNO);
 

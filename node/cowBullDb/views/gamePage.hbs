@@ -12,12 +12,6 @@
     <link rel="stylesheet" href="/public/css/bootstrap.css"
   </head>
   <body>
-    <!-- <script>
-      function render(s) {
-        var dcook = decodeURIComponent(document.cookie);
-        alert(s);
-      }
-    </script> -->
     <div class="container">
     <div class="jumbotron text-center" >
       <!-- <div> -->
@@ -42,15 +36,15 @@
               <th scope="col">Bulls</th>
             </th>
           </thead>
-          <tbody>
-            {{#each list}}
-              <tr>
-                {{#each this}}
-                  <td>{{this}}</td>
-                {{/each}}
-              </tr>
-            {{/each}}
-          </tbody>
+            <tbody>
+              {{#each list}}
+                <tr>
+                  {{#each this}}
+                    <td>{{this}}</td>
+                    {{/each}}
+                </tr>
+              {{/each}}
+            </tbody>
         </table>
       </div>
     </div>

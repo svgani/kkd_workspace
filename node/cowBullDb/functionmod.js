@@ -48,7 +48,9 @@ exports.bNum = function(a,b,nd) {
     }
   }
   console.log("cows : "+cowc+" bulls : "+bullc);
-  return [b,cowc,bullc];
+  cowc=String(cowc);
+  bullc=String(bullc);
+  return b+cowc+bullc;
 }
 
 exports.bRep = function(b,nd){
@@ -59,4 +61,20 @@ exports.bRep = function(b,nd){
       }
     }
   }
+}
+
+exports.toList = function(list, chances, digit){
+  var updatedList = [];
+  console.log("chances : "+chances+" digits : "+digit);
+  for(var i = 0; i < chances; i++) {
+    var a=i*(digit+2);
+    var b=(i+1)*(digit+2);
+    console.log("a : "+a+" b : "+b);
+    var t=list.slice(a,b);
+    console.log(t)
+    var s=[]
+    s.push(t.slice(0,digit),t.slice(digit,digit+1),t.slice(digit+1,digit+2))
+    updatedList.push(s);
+  }
+  return updatedList
 }

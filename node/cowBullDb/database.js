@@ -27,44 +27,54 @@ function generateUid() {
     a = a % li.length
     ran = ran + li[a]
   }
-  console.log('USR'+ts.slice(0,7)+ran+ts.slice(7,nd));
-  return ('USR'+ts.slice(0,7)+ran+ts.slice(7,nd));
+  console.log('G'+ts.slice(0,7)+'A'+ran+'N'+ts.slice(7,nd)+'I');
+  return ('G'+ts.slice(0,7)+'A'+ran+'N'+ts.slice(7,nd)+'I');
 }
 
 const putName = (req,res) => {
-  if (req.body.name=="") {
+  if (req.body.name=="" || req.body.name[0]==" ") {
     res.render('welcomePage',{
       text : "Name is required"
     });
   } else {
     console.log("in putName function name is "+req.body.name);
     u_id = generateUid();
-    client.query('insert into cowbull (uid, name) values ($1, $2)',[u_id,req.body.name])
+    client.query('insert into cowbull (uid, name, digits, chances, result) values ($1, $2, $3, $4, $5)',[u_id,req.body.name,0,0,''])
     console.log("inserted");
-    res.redirect('/'+u_id);
+    res.render('userPage',{
+      name : req.body.name,
+      uid : u_id
+    });
   }
 }
 
-const getName = (req,res) => {
-  console.log("in getName function u_id is "+req.params.u_id)
-  client.query('select name from cowbull where uid=$1',[req.params.u_id]).then(result => {
-    var name=''
-    console.log(result.rows);
-    const data = result.rows;
-    data.forEach(row => {
-      console.log('Name: '+row.name);
-      name=row.name
-    })
-    console.log(name);
-    res.render('userPage',{
-      name : name,
-      uid : req.params.u_id
-    });
-  })
-}
+// const getName = (req,res) => {
+//   console.log("in getName function u_id is "+req.params.u_id)
+//   client.query('select name from cowbull where uid=$1',[req.params.u_id]).then(result => {
+//     var name='0'
+//     const data = result.rows;
+//     data.forEach(row => {
+//       console.log('Name: '+row.name);
+//       name=String(row.name)
+//       console.log(result.rows);
+//     })
+//     if (name[0]=='0'){
+//       console.log("in if part "+name);
+//         res.redirect('/')
+//     }
+//     else {
+//       console.log("in else part "+name);
+//       client.query('update cowbull set result = ($1) where uid = ($2)',['_',req.params.u_id])
+//       res.render('userPage',{
+//         name : name,
+//         uid : req.params.u_id
+//       });
+//     }
+//   })
+// }
 
 const putDigits = (req,res) => {
-  if ( Number(req.body.nd) > 10 || Number(req.body.nd) < 1) {
+  if ( Number(req.body.nd) > 9 || Number(req.body.nd) < 1) {
     client.query('select name from cowbull where uid=$1',[req.params.u_id]).then(result => {
       var name=''
       console.log(result.rows);
@@ -83,6 +93,7 @@ const putDigits = (req,res) => {
   else {
     console.log("in putDigits function digits are "+req.body.nd);
     client.query('update cowbull set digits = ($1)  where uid = ($2)',[req.body.nd,req.params.u_id])
+    client.query('update cowbull set result = ($1)  where uid = ($2)',['',req.params.u_id])
     console.log("inserted digits");
     res.render('gamePage',{
       digit: req.body.nd,
@@ -96,7 +107,7 @@ const putDigits = (req,res) => {
 const guessNO = (req,res) => {
   //get digit and list array
   client.query('select digits,result,randomno from cowbull where uid=$1',[req.params.u_id]).then(result => {
-    var nd=0,a=0,list=[]
+    var nd=0,a=0,list=''
     const data = result.rows;
     data.forEach(row => {
       console.log('digit: '+row.digits+' random no: '+row.randomno+' result: '+row.result);
@@ -110,7 +121,8 @@ const guessNO = (req,res) => {
     res.render('gamePage',{
       digit : nd,
       text : "enter the "+nd+" digit number",
-      list : list,
+      list : fun.toList(list,list.length/(nd+2),nd),
+      len : list.length/(nd+2),
       uid: req.params.u_id
     });
   }
@@ -119,7 +131,8 @@ const guessNO = (req,res) => {
     res.render('gamePage',{
       digit : nd,
       text : "enter the "+nd+" digit number without repetitions",
-      list : list,
+      list : fun.toList(list,list.length/(nd+2),nd),
+      len : list.length/(nd+2),
       uid: req.params.u_id
     });
   }
@@ -128,29 +141,34 @@ const guessNO = (req,res) => {
     res.render('gamePage',{
       digit : nd,
       text : "enter the "+nd+" digit number not starting with 0",
-      list : list,
+      list : fun.toList(list,list.length/(nd+2),nd),
+      len : list.length/(nd+2),
       uid: req.params.u_id
     });
   }
   else {
     arr = fun.bNum(a,req.body.number,nd);
     console.log(arr);
-    arr=arr+list
-    client.query('update cowbull set result = {$1} where uid = ($2)',[arr,req.params.u_id])
+    list=list+arr
+    client.query('update cowbull set result = ($1) where uid = ($2)',[list,req.params.u_id])
     console.log(list);
-    if (arr[2]!=nd){
+    if (arr[nd+1]!=nd){
+      console.log("list length "+list.length);
       res.render('gamePage',{
         digit : nd,
-        list : list,
+        list : fun.toList(list,list.length/(nd+2),nd),
+        len : list.length/(nd+2),
         uid: req.params.u_id
       });
     }
     else {
       res.render("end",{
         digit : nd,
-        // len : (list).length,
-        list : list
+        len : list.length/(nd+2),
+        list : fun.toList(list,list.length/(nd+2),nd)
       });
+      console.log("list length "+list.length);
+      client.query('update cowbull set chances = ($1) where uid = ($2)',[list.length/(nd+2),req.params.u_id])
     }
     console.log(list);
   }
@@ -159,7 +177,6 @@ const guessNO = (req,res) => {
 
 module.exports = {
   putName,
-  getName,
   putDigits,
   guessNO
 }
