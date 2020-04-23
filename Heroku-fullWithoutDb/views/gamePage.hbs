@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<!-- <style>
+    table{
+      margin: auto;
+      border: 1px solid blue;
+      display: inline-table;
+    }
+</style> -->
+  <head>
+    <title>Game app</title>
+    <link rel="stylesheet" href="css/bootstrap.css"
+  </head>
+  <body>
+    <!-- <script>
+      function render(s) {
+        var dcook = decodeURIComponent(document.cookie);
+        alert(s);
+      }
+    </script> -->
+    <div class="container">
+    <div class="jumbotron text-center" >
+      <!-- <div> -->
+        <h1>Cow Bull Game</h1><br>
+        <h3 class="text-success">Guess the {{digit}} digit number</h3><br>
+        <form action="/exec" method="post">
+          <label>Number: </label>
+          <input id=number type="number" name="number">  <br />
+          <input id=submit type="submit" name= "form" value="Submit" />
+        </form>
+      <!-- </div> <br> -->
+      <h5 class="text-info">{{text}}</h5>
+    </div>
+
+      <!-- <button onclick='render('s')'>test</button> -->
+      <div class="container">
+        <table class="table table-bordered text-center table-striped">
+          <thead class="bg-info">
+            <tr>
+              <th scope="col">Number</th>
+              <th scope="col">Cows</th>
+              <th scope="col">Bulls</th>
+            </th>
+          </thead>
+          <tbody>
+            {{#each list}}
+              <tr>
+                {{#each this}}
+                  <td>{{this}}</td>
+                {{/each}}
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
