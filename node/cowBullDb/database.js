@@ -40,6 +40,7 @@ const putName = (req,res) => {
     console.log("in putName function name is "+req.body.name);
     u_id = generateUid();
     client.query('insert into cowbull (uid, name, digits, chances, result) values ($1, $2, $3, $4, $5)',[u_id,req.body.name,0,0,''])
+    client.query('update cowbull set time = timeofday() where uid = ($1)',[u_id])
     console.log("inserted");
     res.render('userPage',{
       name : req.body.name,

@@ -6,3 +6,5 @@ function myFunction() {
     document.getElementById("demo").innerHTML = "This is a paragraph";
   }
 }
+
+console.log('executing...');

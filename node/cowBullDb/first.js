@@ -32,6 +32,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //   return updatedList
 // });
 
+app.get('/.well-known/acme-challenge/io7fUjAxeDpARO2E8h3BZFsa-TENbF7qYCRVA_WPGoE',(req,res) => {
+  console.log("cert acquires")
+  res.send('io7fUjAxeDpARO2E8h3BZFsa-TENbF7qYCRVA_WPGoE.j7XOJu7t3MmztfmTduaiw6Zjy3IHBVp1J_R9_pXlkDA');
+});
+
 app.get('/',(req,res) => {
   console.log("user in welcomePage")
   res.render('welcomePage');
