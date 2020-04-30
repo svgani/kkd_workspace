@@ -7,33 +7,33 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <style>
-  		img {
-   			 width: 100%;
-    			height: auto;
-  		}
-  	</style>
+	<style>
+		img {
+ 			 width: 100%;
+  			height: auto;
+		}
+	</style>
   </head>
   <body>
-      <img src="images/1covid-19.png" alt="covid-19"/>
+      <img style='height: 100%; width: 100%; object-fit: contain' src="1covid-19.png" alt="covid-19"/>
       <div class="jumbotron bg-white mt-0 mb-0 pt-0 pb-0">
 <!--      <div class="navbar-collapse collapse justify-content-middle" id="collapsibleNavbar">-->
       <ul class="nav nav-pills justify-content-end mt-2 mb-2">
         <li class="nav-item">
-          <a class="nav-link" data-toggle="pill" href="#home">Precautions</a>
+          <a class="nav-link active" data-toggle="pill" href="#home">Precautions</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" data-toggle="pill" href="#menu1">Symptoms</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" data-toggle="pill" href="#menu2">Count</a>
+          <a class="nav-link disabled" data-toggle="pill" href="#menu2">Count</a>
         </li>
       </ul>
       </div>
 <!--    </div>-->
 
       <div class="tab-content">
-      <div class="tab-pane fade" id="home">
+      <div class="tab-pane active" id="home">
         <div class="jumbotron text-center pt-4 pb-4">
           <h3>STAY HOME. SAVE LIVES</h3>
           <p>Help stop coronavirus</p>
@@ -46,7 +46,7 @@
           </ul>
         </div>
       </div>
-      <div class="tab-pane fade" id="menu1">
+      <div class="tab-pane" id="menu1">
         <div class="jumbotron text-center pt-4 pb-4" >
             <table class="table table-bordered text-center bg-white">
                 <thead>
@@ -74,30 +74,26 @@
             <li>People with mild symptoms who are otherwise healthy should self-isolate. Seek medical attention if you have a fever, a cough, and difficulty breathing. Call ahead.</li>
         </div>
       </div>
-      <div class="tab-pane active" id="menu2">
+      <div class="tab-pane fade" id="menu2">
         <div class="jumbotron pt-4 pb-4" >
             <div class="container" >
                 <table class="table text-center">
                     <tr>
                         <td>
                             <div class="container">
-                                <ul class="nav nav-pills justify-content-center">
-                                  <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="pill" href="/">India</a>
-                                  </li>
-                                </ul><br>
+                                <h3 class="mt-1">Overview</h3><br>
                                 <h3 class="">
                                     India Statistics
                                 </h3>
-                                <h5 class="text-info">
-                                    confirmed cases <strong>{{iConf}}</strong>
-                                </h5>
-                                <h5 class="text-success">
-                                    discharged cases <strong>{{iDis}}</strong>
-                                </h5>
-                                <h5 class="text-danger">
-                                    deaths <strong>{{iDeaths}}</strong>
-                                </h5>
+                                <div class="text-info">
+                                    confirmed cases {{iConf}}
+                                </div>
+                                <div class="text-success">
+                                    discharged cases {{iDis}}
+                                </div>
+                                <div class="text-error">
+                                    deaths {{iDeaths}}
+                                </div>
                             </div>
                         </td>
                         <td>
@@ -117,15 +113,15 @@
                                 <h3 class="">
                                     {{state}} Statistics
                                 </h3>
-                                <h5 class="text-info">
-                                    confirmed cases <strong>{{sConf}}</strong>
-                                </h5>
-                                <h5 class="text-success">
-                                    discharged cases <strong>{{sDis}}</strong>
-                                </h5>
-                                <h5 class="text-danger">
-                                    deaths <strong>{{sDeaths}}</strong>
-                                </h5>
+                                <div class="text-info">
+                                    confirmed cases {{sConf}}
+                                </div>
+                                <div class="text-success">
+                                    discharged cases {{sDis}}
+                                </div>
+                                <div class="text-error">
+                                    deaths {{sDeaths}}
+                                </div>
                             </div>
                         </td>
                     </tr>

@@ -8,9 +8,13 @@ const bodyParser = require('body-parser');
 app.set('views',path.join(__dirname,'views'));
 app.set('view engine','hbs');
 app.use(bodyParser.urlencoded({ extended: false }));
-
+app.use(express.static(__dirname+'/public'));
 
 app.get('/',(req,res) => {
+  res.redirect('/state/Karnataka');
+})
+
+app.get('/:err',(req,res) => {
   res.redirect('/state/Karnataka');
 })
 
@@ -21,13 +25,17 @@ app.get('/state/:state',(req,res) => {
     console.log(req.params.state);
     var i = fetchStateNumber(msg.data.regional,req.params.state);
     console.log("i = "+i);
-    console.log(msg.data.regional.length);
+    console.log(msg.data.summary);
     var states = fetchStates(msg.data.regional);
     console.log(msg.data.regional[i]);
     res.render('first',{
-      indiaCount: msg.data.summary.total,
+      iConf: msg.data.summary.total,
+      iDis: msg.data.summary.discharged,
+      iDeaths: msg.data.summary.deaths,
       state: req.params.state,
-      stateCount: msg.data.regional[i].totalConfirmed,
+      sConf: msg.data.regional[i].totalConfirmed,
+      sDis: msg.data.regional[i].discharged,
+      sDeaths: msg.data.regional[i].deaths,
       states: states
     })
   })
