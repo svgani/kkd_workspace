@@ -31,7 +31,7 @@ io.on('connection', (socket) => {
   })
   socket.on('digit', (data) => {
     // console.log("socket Connected name :"+data);
-    socket.digit=data;
+    socket.digit=data%11;
     socket.random=fun.rand(data);
     console.log("socket rand : "+socket.random);
     console.log("socket name : "+socket.name);
@@ -55,7 +55,7 @@ io.on('connection', (socket) => {
         console.log("game over");
         socket.emit('end', {
           chances: socket.chances,
-          number: socket.random
+          number: socket.digit
         });
       }
       else {
