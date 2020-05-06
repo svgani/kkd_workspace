@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Game app</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      function dataName() {
+        var name = $('#name').val();
+        if (name) {
+          socket.emit('name',name);
+          document.getElementById('namePage').style.display = "none";
+          document.getElementById('userPage').style.display = "block";
+        }
+        else {
+          document.getElementById("text").innerHTML = "Name required";
+        }
+      }
+      socket.on('user', function (data) {
+        document.getElementById("hello").innerHTML = "Hello "+data;
+      })
+      function dataDigit() {
+        var digit = $('#digit').val();
+        if (digit>=1 && digit<=10) {
+          socket.emit('digit',digit);
+          document.getElementById('gamePage').style.display = "block";
+          document.getElementById('userPage').style.display = "none";
+        }
+        else {
+          document.getElementById("textD").innerHTML = "Enter the Number in the range 1 - 10";
+        }
+      }
+      socket.on('game', function (data) {
+        document.getElementById("guess").innerHTML = "Guess the "+data+" digit Number";
+      })
+      function dataNumber() {
+        var number = $('#number').val();
+        if (number) {
+          // socket.emit('number',number);
+          document.getElementById("textN").innerHTML = "";
+          if (number[0]=='0') {
+            // socket.emit('number',number);
+            document.getElementById("textN").innerHTML = "Number should not start with 0";
+          }
+          else{
+            socket.emit('number',number);
+            document.getElementById("textN").innerHTML = "";
+          }
+        }
+        else {
+          document.getElementById("textN").innerHTML = "Number required";
+        }
+      }
+      socket.on('userIn', function (data) {
+        document.getElementById("textN").innerHTML = data;
+      })
+      socket.on('end', function (data) {
+        document.getElementById('gamePage1').style.display = "none";
+        document.getElementById('endPage').style.display = "block";
+        document.getElementById("found").innerHTML = "The "+data.number+" digit number is found";
+        document.getElementById("chances").innerHTML = "The Number of chances taken are "+data.chances;
+      })
+    </script>
+  </head>
+  <body>
+    <h1 class="text-center">Cow Bull Game</h1>
+    <div id="namePage" class="jumbotron text-center">
+          <label>Enter your name: </label>
+          <input id="name" type="text" placeholder="Name" name="name"> <br><br>
+          <button id=submit onclick="dataName()">Done</button>
+          <br><br>
+          <p id="text" class="text-danger"></p>
+    </div>
+    <div id="userPage" class="jumbotron text-center" style="display: none">
+          <h3 id="hello" class="text-success"></h3><br>
+          <p>Enter the Number in the range 1 - 10</p>
+          <label>No. of digits: </label>
+          <input id="digit" type="number" placeholder="Number"> <br><br>
+          <button id=submit onclick="dataDigit()">Done</button>
+          <br><br>
+          <p id="textD" class="text-danger"></p>
+    </div>
+    <div id="gamePage" style="display: none">
+        <div id="gamePage1" class="jumbotron text-center">
+            <h3>Discover the hidden code!</h3><br>
+            <h4 id="guess" class="text-success"></h4><br>
+            <label>Number: </label>
+            <input id="number" type="number" placeholder="Number"/><br>
+            <br><button id=submit onclick="dataNumber()">Submit</button><br><br>
+            <p id="textN" class="text-danger"></p>
+        </div>
+        <div id="endPage" style="display: none" class="jumbotron text-center">
+          <h4 id="found" class="text-success">
+          </h4>
+          <h5 id="chances" class="text-success">
+          </h5><br>
+          <a href="/">Play_Again</a>
+        </div>
+        <div class="container">
+          <table class="table table-bordered text-center table-striped">
+              <thead class="bg-success text-white">
+                <tr>
+                  <th scope="col">Number</th>
+                  <th scope="col">Cows</th>
+                  <th scope="col">Bulls</th>
+                </th>
+              </thead>
+                <tbody>
+                  <!-- {{#each list}}
+                    <tr>
+                      {{#each this}}
+                        <td>{{this}}</td>
+                      {{/each}}
+                    </tr>
+                  {{/each}} -->
+                </tbody>
+          </table>
+        </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Game app</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="navbar navbar-expand-sm navbar-dark bg-dark sticky-top">
+      <a class="navbar-brand" href="#">Cow Bull</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
+      <ul class="nav nav-pills justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link active text-white" data-toggle="pill" href="#home">Game</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" data-toggle="pill" href="#menu1">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" data-toggle="pill" href="#menu2">Rules</a>
+        </li>
+      </ul>
+      </div>
+    </div>
+
+      <div class="tab-content">
+        <div class="tab-pane active" id="home">
+          <div class="jumbotron text-center" >
+            <!-- <div> -->
+              <h3>Discover the hidden code!</h3><br>
+              <h4 class="text-success">Guess the {{digit}} digit number</h4><br>
+              <form action="/{{uid}}/exec" method="post">
+                <label>Number: </label>
+                <input id=number type="number" name="number">  <br />
+                <input id=submit type="submit" name= "form" value="Submit" />
+              </form>
+            <!-- </div> <br> -->
+            <h5 class="text-info">{{text}}</h5>
+          </div>
+
+            <!-- <button onclick='render('s')'>test</button> -->
+            <div class="container">
+              <table class="table table-bordered text-center table-striped">
+                <thead class="bg-info text-white">
+                  <tr>
+                    <th scope="col">Number</th>
+                    <th scope="col">Cows</th>
+                    <th scope="col">Bulls</th>
+                  </th>
+                </thead>
+                  <tbody>
+                    {{#each list}}
+                      <tr>
+                        {{#each this}}
+                          <td>{{this}}</td>
+                          {{/each}}
+                      </tr>
+                    {{/each}}
+                  </tbody>
+              </table>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="menu1">
+          <div class="jumbotron text-center" >
+            <h2 class="text-center">Cow Bull Game</h2><br>
+            <ul class="list-group">
+              <li class="list-group-item">Bulls and Cows (also known as Cows and Bulls or Pigs and Bulls) is an old code-breaking mind or paper and pencil game for two or more players.</li>
+              <li class="list-group-item">The numerical version of the game is usually played with 4 digits, but can also be played with 3 or any other number of digits.</li>
+              <li class="list-group-item"> The digits must be all different. Then, in turn, the players try to guess their opponent's number who gives the number of matches.</li>
+              <li class="list-group-item">If the matching digits are in their right positions, they are "bulls", if in different positions, they are "cows"</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="menu2">
+          <div class="jumbotron text-center" >
+            <h2>Cow Bull Game</h2>
+            <h3 class="text-success">Rules</h3>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"> This is Cow Bull game:</li>
+              <li class="list-group-item">Enter the number of digits in the range 1 - 10,</li>
+              <li class="list-group-item">You have to guess the number.</li>
+              <li class="list-group-item">Number repititions will not be there.</li>
+              <li class="list-group-item">Bulls = correct code, correct position.</li>
+              <li class="list-group-item">Cows = correct code, wrong position.</li>
+              <li class="list-group-item">Results will be in order as entered_number,cow_count,bull_count.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="fixed-bottom bg-light">
+        <p class="pt-1 mb-1 text-right text-monospace text-black-50">Developed by Gani</p>
+      </div>
+
+    </body>
+  </html>
