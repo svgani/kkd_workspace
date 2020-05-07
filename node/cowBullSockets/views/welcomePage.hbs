@@ -10,6 +10,17 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
       var socket = io();
+      function addRow(data) {
+        var table = document.getElementById("table");
+        var rowCount = table.rows.length;
+        var row = table.insertRow(rowCount);
+        var c1 = row.insertCell(0);
+        c1.innerHTML = data.b;
+        c1 = row.insertCell(1);
+        c1.innerHTML = data.cowc;
+        c1 = row.insertCell(2);
+        c1.innerHTML = data.bullc;
+      }
       function dataName() {
         var name = $('#name').val();
         if (name) {
@@ -32,6 +43,7 @@
           document.getElementById('userPage').style.display = "none";
         }
         else {
+          document.getElementById("digit").value = "";
           document.getElementById("textD").innerHTML = "Enter the Number in the range 1 - 10";
         }
       }
@@ -48,79 +60,135 @@
             document.getElementById("textN").innerHTML = "Number should not start with 0";
           }
           else{
-            socket.emit('number',number);
             document.getElementById("textN").innerHTML = "";
+            socket.emit('number',number);
+            document.getElementById("number").value = "";
+            // number = "";
           }
         }
         else {
           document.getElementById("textN").innerHTML = "Number required";
         }
       }
-      socket.on('userIn', function (data) {
-        document.getElementById("textN").innerHTML = data;
+      socket.on('res', function (data) {
+        // document.getElementById("tbody").innerHTML = "<tr><td>"+data.b+"</td><td>"+data.cowc+"</td><td>"+data.bullc+"</td></tr>";
+        addRow(data);
       })
       socket.on('end', function (data) {
         document.getElementById('gamePage1').style.display = "none";
         document.getElementById('endPage').style.display = "block";
         document.getElementById("found").innerHTML = "The "+data.number+" digit number is found";
         document.getElementById("chances").innerHTML = "The Number of chances taken are "+data.chances;
+        // document.getElementById("tbody").innerHTML = "<tr><td>"+data.b+"</td><td>"+data.cowc+"</td><td>"+data.bullc+"</td></tr>";
+        addRow(data);
+      })
+      socket.on('userIn', function (data) {
+        document.getElementById("textN").innerHTML = data;
       })
     </script>
   </head>
   <body>
-    <h1 class="text-center">Cow Bull Game</h1>
-    <div id="namePage" class="jumbotron text-center">
+      <div class="navbar navbar-expand-sm navbar-dark bg-dark sticky-top">
+        <a class="navbar-brand" href="/">Cow Bull</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse justify-content-end" id="collapsibleNavbar">
+        <ul class="nav nav-pills justify-content-center">
+          <li class="nav-item">
+            <a class="nav-link active text-white" data-toggle="pill" href="#home">Play</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" data-toggle="pill" href="#menu1">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" data-toggle="pill" href="#menu2">Rules</a>
+          </li>
+        </ul>
+        </div>
+      </div>
+
+    <div class="tab-content">
+      <div class="tab-pane active" id="home">
+        <div id="namePage" class="jumbotron text-center">
+          <h1 class="text-center">Cow Bull Game</h1>
+          <br><br>
           <label>Enter your name: </label>
-          <input id="name" type="text" placeholder="Name" name="name"> <br><br>
-          <button id=submit onclick="dataName()">Done</button>
+          <input id="name" type="text" placeholder="Name" name="name"> <br>
+          <button class="mt-3" id=submit onclick="dataName()">Done</button>
           <br><br>
           <p id="text" class="text-danger"></p>
-    </div>
-    <div id="userPage" class="jumbotron text-center" style="display: none">
+        </div>
+        <div id="userPage" class="jumbotron text-center" style="display: none">
+          <h1 class="text-center">Cow Bull Game</h1>
+          <br>
           <h3 id="hello" class="text-success"></h3><br>
           <p>Enter the Number in the range 1 - 10</p>
           <label>No. of digits: </label>
-          <input id="digit" type="number" placeholder="Number"> <br><br>
-          <button id=submit onclick="dataDigit()">Done</button>
+          <input id="digit" type="number" placeholder="Number"> <br>
+          <button class="mt-3" id=submit onclick="dataDigit()">Done</button>
           <br><br>
           <p id="textD" class="text-danger"></p>
-    </div>
-    <div id="gamePage" style="display: none">
-        <div id="gamePage1" class="jumbotron text-center">
+        </div>
+        <div id="gamePage" style="display: none">
+          <div id="gamePage1" class="jumbotron text-center">
             <h3>Discover the hidden code!</h3><br>
             <h4 id="guess" class="text-success"></h4><br>
             <label>Number: </label>
             <input id="number" type="number" placeholder="Number"/><br>
-            <br><button id=submit onclick="dataNumber()">Submit</button><br><br>
-            <p id="textN" class="text-danger"></p>
-        </div>
-        <div id="endPage" style="display: none" class="jumbotron text-center">
-          <h4 id="found" class="text-success">
-          </h4>
-          <h5 id="chances" class="text-success">
-          </h5><br>
-          <a href="/">Play_Again</a>
-        </div>
-        <div class="container">
-          <table class="table table-bordered text-center table-striped">
-              <thead class="bg-success text-white">
-                <tr>
+            <button class="mt-3" id=submit onclick="dataNumber()">Submit</button><br><br>
+            <h5 id="textN" class="text-danger"></h5>
+          </div>
+          <div id="endPage" style="display: none" class="jumbotron text-center">
+            <h1 class="text-center">Cow Bull Game</h1>
+            <br>
+            <h4 id="found" class="text-primary">
+            </h4>
+            <h5 id="chances" class="text-success">
+            </h5><br>
+            <a href="/">Play_Again</a>
+          </div>
+          <div class="container">
+            <table id="table" class="table table-bordered text-center table-striped">
+              <!-- <thead > -->
+                <tr class="bg-success text-white">
                   <th scope="col">Number</th>
                   <th scope="col">Cows</th>
                   <th scope="col">Bulls</th>
-                </th>
-              </thead>
-                <tbody>
-                  <!-- {{#each list}}
-                    <tr>
-                      {{#each this}}
-                        <td>{{this}}</td>
-                      {{/each}}
-                    </tr>
-                  {{/each}} -->
-                </tbody>
-          </table>
+                </tr>
+              </table>
+          </div>
         </div>
+      </div>
+      <div class="tab-pane fade" id="menu1">
+        <div class="jumbotron text-center" >
+          <h2 class="text-center">Cow Bull Game</h2><br>
+          <ul class="list-group">
+            <li class="list-group-item">Bulls and Cows (also known as Cows and Bulls or Pigs and Bulls) is an old code-breaking mind or paper and pencil game for two or more players.</li>
+            <li class="list-group-item">The numerical version of the game is usually played with 4 digits, but can also be played with 3 or any other number of digits.</li>
+            <li class="list-group-item"> The digits must be all different. Then, in turn, the players try to guess their opponent's number who gives the number of matches.</li>
+            <li class="list-group-item">If the matching digits are in their right positions, they are "bulls", if in different positions, they are "cows"</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="menu2">
+        <div class="jumbotron text-center" >
+          <h2>Cow Bull Game</h2>
+          <h3 class="text-success">Rules</h3>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"> This is Cow Bull game:</li>
+            <li class="list-group-item">Enter the number of digits in the range 1 - 10,</li>
+            <li class="list-group-item">You have to guess the number.</li>
+            <li class="list-group-item">Number repititions will not be there.</li>
+            <li class="list-group-item">Bulls = correct code, correct position.</li>
+            <li class="list-group-item">Cows = correct code, wrong position.</li>
+            <li class="list-group-item">Results will be in order as entered_number,cow_count,bull_count.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="fixed-bottom bg-light">
+      <p class="pt-1 mb-1 text-right text-monospace text-black-50">Developed by Gani</p>
     </div>
   </body>
 </html>

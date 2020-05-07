@@ -4,8 +4,10 @@ const app = express();
 const path = require('path');
 var fun = require('./functionmod');
 const socket = require('socket.io');
+var favicon = require('serve-favicon');
 const PORT = process.env.PORT || 8000
 
+app.use(favicon(path.join(__dirname, 'views', 'circled-g.png')))
 app.set('views',path.join(__dirname,'views'));
 app.set('view engine','hbs');
 
@@ -22,6 +24,7 @@ var io = socket(server);
 var rooms=[];
 io.on('connection', (socket) => {
   socket.chances = 0;
+  console.log(socket.id);
   socket.on('name', (name) => {
     console.log("socket Connected name :"+name);
     socket.name=fun.caps(name);
@@ -50,16 +53,24 @@ io.on('connection', (socket) => {
     }
     else {
       socket.chances++;
-      var res = fun.bNum(socket.random,socket.number,socket.digit);
-      if (res[2]==socket.digit) {
+      var res1 = fun.bNum(socket.random,socket.number,socket.digit);
+      if (res1[2]==socket.digit) {
         console.log("game over");
         socket.emit('end', {
           chances: socket.chances,
-          number: socket.digit
+          number: socket.digit,
+          b: res1[0],
+          cowc: res1[1],
+          bullc: res1[2]
         });
       }
       else {
-        socket.emit('userIn', res);
+        console.log("sending : "+res1);
+        socket.emit('res', {
+          b: res1[0],
+          cowc: res1[1],
+          bullc: res1[2]
+        });
       }
     }
   })
